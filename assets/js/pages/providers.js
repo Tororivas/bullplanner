@@ -563,9 +563,7 @@ App.Pages.Providers = (function () {
         App.Pages.Providers.addEventListeners();
 
         vars('services').forEach((service) => {
-            const checkboxId = `provider-service-${service.id}`;
-            const serviceCategoryId = service.id_service_categories !== null ? service.id_service_categories : '';
-            const category = $serviceCategoryId.val(serviceCategoryId);
+            const checkboxId = `provider-service-${service.id}`;         
             $('<div/>', {
                 'class': 'checkbox',
                 'html': [
@@ -583,7 +581,7 @@ App.Pages.Providers = (function () {
                             }),
                             $('<label/>', {
                                 'class': 'form-check-label',
-                                'text': service.name + (serviceCategoryId ? ' (' + category.text() + ')' : ''),
+                                'text': service.name,
                                 'for': checkboxId,
                             }),
                         ],
