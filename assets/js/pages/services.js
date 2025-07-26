@@ -355,10 +355,8 @@ App.Pages.Services = (function () {
      *
      * @return {String} The HTML code that represents the record on the filter results list.
      */
-    function getFilterHtml(service) {;
-        const serviceCategoryId = service.id_service_categories !== null ? service.id_service_categories : '';
-        const category = $serviceCategoryId.val(serviceCategoryId);
-        const name = service.name + (serviceCategoryId ? ' (' + category.text() + ')' : '');
+    function getFilterHtml(service) {
+        const name = service.name;
 
         const info = service.duration + ' min - ' + service.currency + ' ' + service.price;
 
