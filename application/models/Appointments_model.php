@@ -70,6 +70,30 @@ class Appointments_model extends EA_Model
     }
 
     /**
+     * Set appointment color based on status.
+     *
+     * @param array $appointment Associative array with the appointment data.
+     */
+    protected function setColorByStatus(array &$appointment): void
+    {
+        // Set default status to 'Pending' if not provided
+        if (empty($appointment['status'])) {
+            $appointment['status'] = 'Pending';
+        }
+
+        // Set color based on status
+        switch (strtolower($appointment['status'])) {
+            case 'confirmed':
+                $appointment['color'] = '#7CBAE8'; // Blue (RGB: 124, 186, 232)
+                break;
+            case 'pending':
+            default:
+                $appointment['color'] = '#EBE07C'; // Yellow (RGB: 235, 224, 124)
+                break;
+        }
+    }
+
+    /**
      * Validate the appointment data.
      *
      * @param array $appointment Associative array with the appointment data.
@@ -214,6 +238,9 @@ class Appointments_model extends EA_Model
         $appointment['create_datetime'] = date('Y-m-d H:i:s');
         $appointment['update_datetime'] = date('Y-m-d H:i:s');
         $appointment['hash'] = random_string('alnum', 12);
+        
+        // Set color based on status
+        $this->setColorByStatus($appointment);
 
         if (!$this->db->insert('appointments', $appointment)) {
             throw new RuntimeException('Could not insert appointment.');
@@ -234,6 +261,9 @@ class Appointments_model extends EA_Model
     protected function update(array $appointment): int
     {
         $appointment['update_datetime'] = date('Y-m-d H:i:s');
+        
+        // Set color based on status when updating
+        $this->setColorByStatus($appointment);
 
         if (!$this->db->update('appointments', $appointment, ['id' => $appointment['id']])) {
             throw new RuntimeException('Could not update appointment record.');
@@ -644,5 +674,8 @@ class Appointments_model extends EA_Model
         $decoded_request['is_unavailability'] = false;
 
         $appointment = $decoded_request;
+        
+        // Set color based on status for API requests
+        $this->setColorByStatus($appointment);
     }
 }

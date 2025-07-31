@@ -436,11 +436,10 @@ class Booking extends EA_Controller
 
             $appointment['id_users_customer'] = $customer_id;
             $appointment['is_unavailability'] = false;
-            $appointment['color'] = $service['color'];
 
             $appointment_status_options_json = setting('appointment_status_options', '[]');
             $appointment_status_options = json_decode($appointment_status_options_json, true) ?? [];
-            $appointment['status'] = $appointment_status_options[0] ?? null;
+            $appointment['status'] = $appointment_status_options[0] ?? 'Pending';
 
             $this->appointments_model->only($appointment, $this->allowed_appointment_fields);
 
